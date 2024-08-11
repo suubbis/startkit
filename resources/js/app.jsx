@@ -1,10 +1,7 @@
-import './bootstrap';
-import '../css/app.css';
-
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import '../css/style.css';
-import '../css/satoshi.css';
+import '../css/app.css'
+import '../css/satoshi.css'
 
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
