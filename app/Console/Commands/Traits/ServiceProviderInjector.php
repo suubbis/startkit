@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands\Traits;
 
+use App\Providers\RepositoryServiceProvider;
 use ReflectionClass;
-use ReflectionMethod;
 
 trait ServiceProviderInjector
 {
-    public function injectCodeToRegisterMethod($appServiceProviderFile, $codeToAdd)
+    public function injectCodeToRegisterMethod($appServiceProviderFile, $codeToAdd): void
     {
-        $reflectionClass = new ReflectionClass(\App\Providers\RepositoryServiceProvider::class);
+        $reflectionClass = new ReflectionClass(RepositoryServiceProvider::class);
         $reflectionMethod = $reflectionClass->getMethod('register');
 
         $methodBody = file($appServiceProviderFile);
