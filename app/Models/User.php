@@ -44,4 +44,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+
+    }
+
+    public function companyDetail(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(CompanyDetail::class, 'manager_id');
+    }
+
+    public function accessControl(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(AccessControl::class);
+    }
+
+    public function permissions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Permission::class, 'role_id', 'role_id');
+    }
 }
