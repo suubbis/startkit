@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "jsvectormap": "^1.6.0",
+        "react-hook-form": "^7.52.2",
         "react-router-dom": "^6.26.0"
     }
 }
