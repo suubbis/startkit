@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ namespace }};
+
+interface {{ class }} extends BaseRepositoryInterface
+{
+    public function __construct()
+    {
+        //
+    }
+
+}
