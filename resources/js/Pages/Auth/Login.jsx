@@ -6,21 +6,30 @@ import GuestLayout from "../../layouts/GuestLayout";
 import InputLabel from "@/common/InputLabel.jsx";
 import TextInput from "@/common/TextInput.jsx";
 import InputError from "@/common/InputError.jsx";
-import PrimaryButton from "@/common/PrimaryButton.jsx";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import {postRoute} from "@/actions/appActions";
+import { useDispatch } from 'react-redux';
 
-
-type Inputs = {
-    'email': string
-    'password': string
-}
 
 const Login = () => {
-    const {login, handleSubmit, watch, formState: { errors },} = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        e.preventDefault();
-        console.log('clicked')
+    const dispatch = useDispatch();
+    const {register, handleSubmit ,watch, formState: { errors }} = useForm({defaultValues:{
+            email: '',
+            password: ''
+        }})
+    const onSubmit = (data) => {
         console.log(data)
+        dispatch(postRoute('/login', data))
+            .then(response => {
+                if (response.code === 200) {
+                    console.log('Login successful:', response.data.message);
+                }else{
+                    console.log('Login failed:', response.data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+            });
     }
 
     return (
@@ -184,7 +193,13 @@ const Login = () => {
                                                 className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 type="email"
                                                 placeholder="Enter your email"
-                                                {...login("email", {required: true, pattern: /.+@.+\..+/})}
+                                                {...register("email", {
+                                                    required: "Email is required",
+                                                    pattern: {
+                                                        value: /.+@.+\..+/,
+                                                        message: "Enter a valid email address"
+                                                    }
+                                                })}
                                             />
 
                                             <span className="absolute right-4 top-4">
@@ -204,7 +219,7 @@ const Login = () => {
                                                 </g>
                                               </svg>
                                             </span>
-                                            <InputError className="mt-1.5 text-red-500" message="Email is required"/>
+                                            {errors.email && <InputError className="mt-1.5 text-red-500" message={errors.email.message}/>}
                                         </div>
                                     </div>
 
@@ -215,7 +230,9 @@ const Login = () => {
                                                 className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                                 type="password"
                                                 placeholder="Enter your password"
-                                                {...login("password", {required: true,})}
+                                                {...register("password", {
+                                                    required: "password is required",
+                                                })}
                                             />
 
                                             <span className="absolute right-4 top-4">
@@ -239,6 +256,7 @@ const Login = () => {
                                                 </g>
                                               </svg>
                                             </span>
+                                            {errors.password && <InputError className="mt-1.5 text-red-500" message={errors.password.message}/>}
                                         </div>
                                     </div>
 
