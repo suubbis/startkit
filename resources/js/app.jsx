@@ -1,11 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import '../css/app.css'
 import '../css/satoshi.css'
 
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import RouteList from "@/RouteList.tsx";
+import {Provider} from "react-redux";
+import store from "@/store";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -17,9 +19,12 @@ createInertiaApp({
 
         root.render(
             <React.StrictMode>
-                <Router>
-                    <App {...props} />
-                </Router>
+                <Provider store={store}>
+                    <RouteList />
+                </Provider>
+                {/*<Router>*/}
+                {/*    <App {...props} />*/}
+                {/*</Router>*/}
             </React.StrictMode>
         );
     },

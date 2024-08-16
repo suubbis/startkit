@@ -1,9 +1,9 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import DefaultLayout from "@/layouts/DefaultLayout.tsx";
 
 export default function Dashboard({ auth }) {
     return (
-        <AuthenticatedLayout
+        <DefaultLayout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
@@ -16,6 +16,6 @@ export default function Dashboard({ auth }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </DefaultLayout>
     );
 }
