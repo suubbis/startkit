@@ -3,14 +3,14 @@ import {
     SET_SESSION,
     SET_USER_DATA,
 } from "./types";
-import Axios from "../Config/Axios";
+import Axios from "../config/Axios";
 import {
     authHeaders,
     destroySession,
     isAuthenticated,
     toastAlert,
-} from "../Helpers/Functions";
-import History from "../Utils/history";
+} from "@/helpers/Functions";
+import History from "../utils/history";
 
 export const getUserInfo = () => (dispatch) => {
     dispatch({

@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigate, Route } from "react-router-dom";
-import { isAuthenticated } from "../Helpers/Functions";
+import { isAuthenticated } from "@/helpers/Functions";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
     if (isAuthenticated()) {
@@ -16,6 +16,6 @@ export const NotProtectedRoute = ({ component: Component, ...rest }) => {
     if (!isAuthenticated()) {
         return <Component {...rest} />;
     } else {
-        return <Navigate to="/" />;
+        return <Navigate to="/dashboard" />;
     }
 };

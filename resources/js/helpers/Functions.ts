@@ -52,8 +52,7 @@ export const authHeaders = () => {
     }
 };
 
-export const getToken = () =>
-    isAuthenticated() ? "Bearer " + getSession().__token : null;
+export const getToken = () => isAuthenticated() ? "Bearer " + getSession().__token : null;
 
 export const toastAlert = (type, message) => {
     if (type === "success") {

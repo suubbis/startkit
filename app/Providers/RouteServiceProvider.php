@@ -25,6 +25,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api/v1')
                 ->group(base_path('routes/api_v1.php'));
 
+            Route::middleware(['throttle:60,1'])
+                ->prefix('api/v1')
+                ->group(base_path('routes/auth_v1.php'));
         });
     }
 

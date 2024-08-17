@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import {NotProtectedRoute, ProtectedRoute} from "./Utils/Routes";
-import Login from "./Pages/Auth/Login";
-import Dashboard from "./Pages/Dashboard";
+import {NotProtectedRoute, ProtectedRoute} from "./utils/Routes";
+import Login from "./pages/Auth/Login";
+import Dashboard from "./pages/Dashboard";
 
 class RouteList extends Component {
     render() {
@@ -17,7 +17,7 @@ class RouteList extends Component {
 
                     {/* PROTECTED ROUTES */}
                     <Route
-                        path="/"
+                        path="/dashboard"
                         element={<ProtectedRoute component={Dashboard} />}
                     />
                 </Routes>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import GuestLayout from "../../layouts/GuestLayout";
@@ -7,24 +7,29 @@ import InputLabel from "@/common/InputLabel.jsx";
 import TextInput from "@/common/TextInput.jsx";
 import InputError from "@/common/InputError.jsx";
 import { useForm } from "react-hook-form";
-import {postRoute} from "@/actions/appActions";
-import { useDispatch } from 'react-redux';
+import {postRoute, setUserSession} from "@/actions/appActions";
+import {connect, useDispatch} from 'react-redux';
+import {isAuthenticated, setSession} from "@/helpers/Functions";
+import PropTypes from "prop-types";
 
 
 const Login = () => {
     const dispatch = useDispatch();
     const {register, handleSubmit ,watch, formState: { errors }} = useForm({defaultValues:{
-            email: '',
-            password: ''
+            email: 'admin@example.com',
+            password: 'password'
         }})
     const onSubmit = (data) => {
         console.log(data)
         dispatch(postRoute('/login', data))
             .then(response => {
-                if (response.code === 200) {
-                    console.log('Login successful:', response.data.message);
+                console.log('resp', response)
+                if (response.status) {
+                    setSession(response.data);
+                    setUserSession(response.data);
+                    window.location = '/dashboard';
                 }else{
-                    console.log('Login failed:', response.data.message);
+                    console.log('Login failed:', response.message);
                 }
             })
             .catch(error => {
@@ -286,4 +291,9 @@ const Login = () => {
     );
 };
 
-export default Login;
+Login.propTypes = {
+    postRoute: PropTypes.func.isRequired,
+    setUserSession: PropTypes.func.isRequired,
+};
+
+export default connect(null, {postRoute, setUserSession})(Login);
