@@ -3,6 +3,8 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {NotProtectedRoute, ProtectedRoute} from "./utils/Routes";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard";
+import Company from './pages/Company/Company'
+import PageTitle from "@/components/PageTitle";
 
 class RouteList extends Component {
     render() {
@@ -12,13 +14,29 @@ class RouteList extends Component {
                     {/* PUBLIC ROUTES */}
                     <Route
                         path="/login"
-                        element={<NotProtectedRoute component={Login} />}
+                        element={
+                        <>
+                            <PageTitle title="Login | Startkit" />
+                            <NotProtectedRoute component={Login} />
+                        </>}
                     />
 
                     {/* PROTECTED ROUTES */}
                     <Route
-                        path="/dashboard"
-                        element={<ProtectedRoute component={Dashboard} />}
+                        path="/"
+                        element={
+                            <>
+                                <PageTitle title="Dashboard | Startkit" />
+                                <ProtectedRoute component={Dashboard} />
+                            </>}
+                    />
+                    <Route
+                        path="/company"
+                        element={
+                            <>
+                                <PageTitle title="Company | Startkit" />
+                                <ProtectedRoute component={Company} />
+                            </>}
                     />
                 </Routes>
             </Router>

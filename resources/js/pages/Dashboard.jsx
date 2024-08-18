@@ -1,19 +1,32 @@
-import { Head } from '@inertiajs/react';
-import DefaultLayout from "@/layouts/DefaultLayout.tsx";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import DataStatsThree from "@/components/DataStats/DataStatsThree";
+import ChartSeven from "@/components/Charts/ChartSeven";
+import ChartEight from "@/components/Charts/ChartEight";
+import LeadsReport from "@/components/LeadsReport";
+import ChartNine from "@/components/Charts/ChartNine";
+import ToDoList from "@/components/Todo/ToDoList";
 
 const Dashboard = () => {
     return (
-        <DefaultLayout
-            user={'Test'}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
+        <DefaultLayout>
+            <DataStatsThree />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
+            <div className="mt-7.5 grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
+                <div className="col-span-12 xl:col-span-7">
+                    <ChartSeven />
                 </div>
+
+                <div className="col-span-12 xl:col-span-5">
+                    <ChartEight />
+                </div>
+
+                <LeadsReport />
+
+                <div className="col-span-12 xl:col-span-5">
+                    <ChartNine />
+                </div>
+
+                <ToDoList />
             </div>
         </DefaultLayout>
     );

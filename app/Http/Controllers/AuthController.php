@@ -25,4 +25,12 @@ class AuthController extends Controller
             'user' => $user,
         ],'Login successful');
     }
+
+    public function logout(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+        return $this->jsonResponse([],'Logout successful');
+    }
 }

@@ -30,7 +30,7 @@ export const getUserData = () => (dispatch) => {
         Axios.get("user_info", authHeaders())
             .then((response) => {
                 console.log(response, "response");
-                if (response.data.code === 200) {
+                if (response.data.code) {
                     const data = response.data.data;
                     dispatch({
                         type: SET_SESSION,
@@ -49,7 +49,7 @@ export const postRoute = (url: string, payload: any) => (dispatch) => {
     return Axios.post(`${url}`, payload, authHeaders())
         .then((response) => {
             console.log(response, "save data");
-            if (response.data.code === 200) {
+            if (response.status) {
                 toastAlert("success", response.data.message);
             } else {
                 if (response.data.message)
@@ -68,7 +68,7 @@ export const patchRoute = (url: string, payload: any) => (dispatch) => {
     return Axios.put(`${url}`, payload, authHeaders())
         .then((res) => {
             console.log(res, "update data");
-            if (res.data.code === 200) {
+            if (res.status) {
                 if (res.data.message) toastAlert("success", res.data.message);
             } else {
                 if (res.data.message) toastAlert("error", res.data.message );
@@ -85,7 +85,7 @@ export const getRoute = (url: string) => (dispatch) => {
     return Axios.get(`${url}`, authHeaders())
         .then((response) => {
             console.log(response, "listing data response");
-            if (response.data.code === 200) {
+            if (response.status) {
                 toastAlert("success", response.data.message);
             } else {
                 console.log("res: ", response.data.message);
@@ -102,7 +102,7 @@ export const getMethod = (url: string, params: any) => (dispatch) => {
     return Axios.get(url, {params: {...params}, ...authHeaders()})
         .then((response) => {
             console.log(response, "get method response");
-            if (response.data.code === 200) {
+            if (response.status) {
                 if (response.data.message)
                     toastAlert("success", response.data.message);
             } else toastAlert("error", response.data.message);
@@ -121,7 +121,7 @@ export const deleteRoute = (url: string) => (dispatch) => {
     return Axios.delete(`${url}`, authHeaders())
         .then((response) => {
             console.log(response, "deleted response");
-            if (response.data.code === 200) {
+            if (response.data) {
                 if (response.data.message)
                     toastAlert("success", response.data.message);
             } else {

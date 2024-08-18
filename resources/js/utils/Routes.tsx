@@ -11,11 +11,11 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
 };
 
 export const NotProtectedRoute = ({ component: Component, ...rest }) => {
-    const { path } = rest;
+    console.log('NotProtectedRoute:', isAuthenticated());
 
     if (!isAuthenticated()) {
         return <Component {...rest} />;
     } else {
-        return <Navigate to="/dashboard" />;
+        return <Navigate to="/" />;
     }
 };

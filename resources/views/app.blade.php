@@ -9,7 +9,7 @@
         <!-- Scripts -->
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+        @vite(['resources/js/app.jsx', "resources/js/pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
 
@@ -17,7 +17,7 @@
             x-init="
               darkMode = JSON.parse(localStorage.getItem('darkMode'));
               $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-            :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}"
+            :class="{'dark text-bodydark bg-boxdark-2': darkMode === true} sidebar-expanded"
     >
         @inertia
     </body>

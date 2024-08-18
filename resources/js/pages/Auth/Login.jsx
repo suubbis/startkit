@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import GuestLayout from "../../layouts/GuestLayout";
@@ -8,13 +8,13 @@ import TextInput from "@/common/TextInput.jsx";
 import InputError from "@/common/InputError.jsx";
 import { useForm } from "react-hook-form";
 import {postRoute, setUserSession} from "@/actions/appActions";
-import {connect, useDispatch} from 'react-redux';
-import {isAuthenticated, setSession} from "@/helpers/Functions";
-import PropTypes from "prop-types";
+import {useDispatch} from 'react-redux';
+import {setSession} from "@/helpers/Functions";
 
 
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {register, handleSubmit ,watch, formState: { errors }} = useForm({defaultValues:{
             email: 'admin@example.com',
             password: 'password'
@@ -26,8 +26,8 @@ const Login = () => {
                 console.log('resp', response)
                 if (response.status) {
                     setSession(response.data);
-                    setUserSession(response.data);
-                    window.location = '/dashboard';
+                    dispatch(setUserSession(response.data));
+                    navigate('/');
                 }else{
                     console.log('Login failed:', response.message);
                 }
@@ -273,14 +273,14 @@ const Login = () => {
                                         />
                                     </div>
 
-                                    <div className="mt-6 text-center">
-                                        <p>
-                                            Don’t have any account?{' '}
-                                            <Link to="/auth/signup" className="text-primary">
-                                                Sign Up
-                                            </Link>
-                                        </p>
-                                    </div>
+                                    {/*<div className="mt-6 text-center">*/}
+                                    {/*    <p>*/}
+                                    {/*        Don’t have any account?{' '}*/}
+                                    {/*        <Link to="/auth/signup" className="text-primary">*/}
+                                    {/*            Sign Up*/}
+                                    {/*        </Link>*/}
+                                    {/*    </p>*/}
+                                    {/*</div>*/}
                                 </form>
                             </div>
                         </div>
@@ -291,9 +291,4 @@ const Login = () => {
     );
 };
 
-Login.propTypes = {
-    postRoute: PropTypes.func.isRequired,
-    setUserSession: PropTypes.func.isRequired,
-};
-
-export default connect(null, {postRoute, setUserSession})(Login);
+export default Login;
