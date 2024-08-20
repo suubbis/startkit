@@ -3,7 +3,10 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {NotProtectedRoute, ProtectedRoute} from "./utils/Routes";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard";
-import Company from './pages/Company/Company'
+import Company from './pages/Company/Company';
+import NewCompany from './pages/Company/CompanyForm';
+import Staff from './pages/Staff/Staff';
+import NewStaff from './pages/Staff/StaffForm';
 import PageTitle from "@/components/PageTitle";
 
 class RouteList extends Component {
@@ -36,6 +39,46 @@ class RouteList extends Component {
                             <>
                                 <PageTitle title="Company | Startkit" />
                                 <ProtectedRoute component={Company} />
+                            </>}
+                    />
+                    <Route
+                        path="/company/create"
+                        element={
+                            <>
+                                <PageTitle title="New Company | Startkit" />
+                                <ProtectedRoute component={NewCompany} />
+                            </>}
+                    />
+                    <Route
+                        path="/company/edit/:id"
+                        element={
+                            <>
+                                <PageTitle title="Edit Company | Startkit" />
+                                <ProtectedRoute component={NewCompany} />
+                            </>}
+                    />
+                    <Route
+                        path="/staff"
+                        element={
+                            <>
+                                <PageTitle title="staff | Startkit" />
+                                <ProtectedRoute component={Staff} />
+                            </>}
+                    />
+                    <Route
+                        path="/staff/create"
+                        element={
+                            <>
+                                <PageTitle title="New staff | Startkit" />
+                                <ProtectedRoute component={NewStaff} />
+                            </>}
+                    />
+                    <Route
+                        path="/staff/edit/:id"
+                        element={
+                            <>
+                                <PageTitle title="Edit staff | Startkit" />
+                                <ProtectedRoute component={NewStaff} />
                             </>}
                     />
                 </Routes>

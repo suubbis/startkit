@@ -9,6 +9,7 @@ import {Provider} from "react-redux";
 import store from "@/store";
 import './css/style.css';
 import './css/simple-datatables.css';
+import {ToastContainer} from "react-toastify";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -22,6 +23,7 @@ createInertiaApp({
             <React.StrictMode>
                 <Provider store={store}>
                     <RouteList />
+                    <ToastContainer />
                 </Provider>
                 {/*<Router>*/}
                 {/*    <App {...props} />*/}

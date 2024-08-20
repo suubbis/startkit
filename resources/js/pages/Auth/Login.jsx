@@ -24,12 +24,11 @@ const Login = () => {
         dispatch(postRoute('/login', data))
             .then(response => {
                 console.log('resp', response)
+                console.log('status', response.status)
                 if (response.status) {
-                    setSession(response.data);
-                    dispatch(setUserSession(response.data));
+                    setSession(response);
+                    dispatch(setUserSession(response));
                     navigate('/');
-                }else{
-                    console.log('Login failed:', response.message);
                 }
             })
             .catch(error => {
