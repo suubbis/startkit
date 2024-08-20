@@ -7,66 +7,10 @@ import {
   usePagination,
 } from 'react-table';
 
-const data = [
-  {
-    name: 'ABC Company',
-    abbreviation: 'EC',
-    address: '123 Company St, Company City, Company Country',
-    manager_id: '1',
-    phone: '0987654321',
-    email: 'info@example.com',
-    website: 'https://www.example.com',
-    created_at: '2024-08-15',
-  } ,{
-    name: 'Example Company',
-    abbreviation: 'EC',
-    address: '123 Company St, Company City, Company Country',
-    manager_id: '1',
-    phone: '0987654321',
-    email: 'info@example.com',
-    website: 'https://www.example.com',
-    created_at: '2024-08-15',
-  }
-];
-
-// table header
-const column = [
-  {
-    Header: 'Name',
-    accessor: 'name',
-  },
-  {
-    Header: 'Abbreviation',
-    accessor: 'abbreviation',
-  },
-  {
-    Header: 'Address',
-    accessor: 'address',
-  },
-  {
-    Header: 'Manager',
-    accessor: 'manager_id',
-  },
-  {
-    Header: 'Phone',
-    accessor: 'phone',
-  },
-  {
-    Header: 'Email',
-    accessor: 'email',
-  },
-  {
-    Header: 'Website',
-    accessor: 'website',
-  },
-  {
-    Header: 'Created Date',
-    accessor: 'created_at',
-  },
-];
-
-const CompanyTable = () => {
-  const columns = useMemo(() => column, []);
+const DataTable = (props) => {
+    const { data, column } = props;
+    console.log(data, column);
+    const columns = useMemo(() => column, []);
 
   const tableInstance = useTable(
     {
@@ -178,11 +122,11 @@ const CompanyTable = () => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, key) => {
+          {page?.map((row, key) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()} key={key}>
-                {row.cells.map((cell, key) => {
+                {row?.cells?.map((cell, key) => {
                   return (
                     <td {...cell.getCellProps()} key={key}>
                       {cell.render('Cell')}
@@ -259,4 +203,4 @@ const CompanyTable = () => {
   );
 };
 
-export default CompanyTable;
+export default DataTable;

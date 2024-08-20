@@ -3,6 +3,7 @@ import {Navigate, Route } from "react-router-dom";
 import { isAuthenticated } from "@/helpers/Functions";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
+    console.log('ProtectedRoute:', isAuthenticated());
     if (isAuthenticated()) {
         return <Component {...rest} />;
     } else {

@@ -18,8 +18,8 @@ Route::get('/', function () {
 //    return Inertia::render('Dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/{any}/', function () {
+Route::get('/{any}', function () {
     return Inertia::render('Dashboard');
-})->where('any', '.*');
+})->where('any', '^(?!api).*$');
 
 include __DIR__.'/auth.php';

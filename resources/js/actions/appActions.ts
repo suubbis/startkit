@@ -45,14 +45,14 @@ export const getUserData = () => (dispatch) => {
             });
     }
 };
-export const postRoute = (url: string, payload: any) => (dispatch) => {
+export const postRoute = (url: string, payload: any, toast = false) => (dispatch) => {
     return Axios.post(`${url}`, payload, authHeaders())
         .then((response) => {
             console.log(response, "save data");
             if (response.status) {
-                toastAlert("success", response.data.message);
+                if (response.data.message && toast) toastAlert("success", response.data.message);
             } else {
-                if (response.data.message)
+                if (response.data.message && toast)
                     toastAlert("error", response.data.message);
             }
             return response.data;
@@ -64,14 +64,14 @@ export const postRoute = (url: string, payload: any) => (dispatch) => {
         });
 };
 
-export const patchRoute = (url: string, payload: any) => (dispatch) => {
+export const patchRoute = (url: string, payload: any, toast = false) => (dispatch) => {
     return Axios.put(`${url}`, payload, authHeaders())
         .then((res) => {
             console.log(res, "update data");
             if (res.status) {
-                if (res.data.message) toastAlert("success", res.data.message);
+                if (res.data.message && toast) toastAlert("success", res.data.message);
             } else {
-                if (res.data.message) toastAlert("error", res.data.message );
+                if (res.data.message && toast) toastAlert("error", res.data.message );
             }
             return res.data;
         })
@@ -81,12 +81,13 @@ export const patchRoute = (url: string, payload: any) => (dispatch) => {
         });
 };
 
-export const getRoute = (url: string) => (dispatch) => {
+export const getRoute = (url: string, toast = false) => (dispatch) => {
     return Axios.get(`${url}`, authHeaders())
         .then((response) => {
             console.log(response, "listing data response");
             if (response.data.status) {
-                toastAlert("success", response.data.message);
+                if (response.data.message && toast)
+                    toastAlert("success", response.data.message);
             } else {
                 console.log("res: ", response.data.message);
                 toastAlert("error", response.data.message);
@@ -98,12 +99,12 @@ export const getRoute = (url: string) => (dispatch) => {
         });
 };
 
-export const getMethod = (url: string, params: any) => (dispatch) => {
+export const getMethod = (url: string, params: any, toast = false) => (dispatch) => {
     return Axios.get(url, {params: {...params}, ...authHeaders()})
         .then((response) => {
             console.log(response, "get method response");
             if (response.data.status) {
-                if (response.data.message)
+                if (response.data.message && toast)
                     toastAlert("success", response.data.message);
             } else toastAlert("error", response.data.message);
 
@@ -117,15 +118,15 @@ export const getMethod = (url: string, params: any) => (dispatch) => {
         });
 };
 
-export const deleteRoute = (url: string) => (dispatch) => {
+export const deleteRoute = (url: string, toast = false) => (dispatch) => {
     return Axios.delete(`${url}`, authHeaders())
         .then((response) => {
             console.log(response, "deleted response");
             if (response.data) {
-                if (response.data.message)
+                if (response.data.message && toast)
                     toastAlert("success", response.data.message);
             } else {
-                if (response.data.message)
+                if (response.data.message && toast)
                     toastAlert("error", response.data.message);
             }
             return response.data;

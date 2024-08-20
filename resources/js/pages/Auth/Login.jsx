@@ -26,8 +26,8 @@ const Login = () => {
                 console.log('resp', response)
                 console.log('status', response.status)
                 if (response.status) {
-                    setSession(response);
-                    dispatch(setUserSession(response));
+                    setSession(response.data);
+                    dispatch(setUserSession(response.data));
                     navigate('/');
                 }
             })

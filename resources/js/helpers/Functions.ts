@@ -28,7 +28,7 @@ export const decodeID = (id) => {
     return decodedID.length ? decodedID[0] : decodedID;
 };
 
-export const isAuthenticated = () => !!Cookies.get("_startkit"); // return true false
+export const isAuthenticated = () => !!Cookies.get("_startkit") && !!JSON.parse(Cookies.get("_startkit")).__token;
 
 export const setSession = (data) => {
     const __session = {

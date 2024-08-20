@@ -7,6 +7,7 @@ import Company from './pages/Company/Company';
 import NewCompany from './pages/Company/CompanyForm';
 import Staff from './pages/Staff/Staff';
 import NewStaff from './pages/Staff/StaffForm';
+import SystemSettingFrom from './pages/SystemSettings/SystemSettingFrom';
 import PageTitle from "@/components/PageTitle";
 
 class RouteList extends Component {
@@ -79,6 +80,15 @@ class RouteList extends Component {
                             <>
                                 <PageTitle title="Edit staff | Startkit" />
                                 <ProtectedRoute component={NewStaff} />
+                            </>}
+                    />
+
+                    <Route
+                        path="/system-settings"
+                        element={
+                            <>
+                                <PageTitle title="System Settings | Startkit" />
+                                <ProtectedRoute component={SystemSettingFrom} />
                             </>}
                     />
                 </Routes>
