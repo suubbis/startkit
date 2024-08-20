@@ -1,11 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import {useTranslation} from "react-i18next";
+import {Button} from "@headlessui/react";
 
 const DropdownsOne: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   // close on click outside
   useEffect(() => {
@@ -83,20 +90,20 @@ const DropdownsOne: React.FC = () => {
           >
             <ul className="flex flex-col">
               <li>
-                <Link
-                  to="#"
-                  className="flex py-2 px-5 font-medium hover:bg-whiter hover:text-primary dark:hover:bg-meta-4"
+                <Button
+                    onClick={() => changeLanguage('en')}
+                    className="flex py-2 px-5 font-medium hover:bg-whiter hover:text-primary dark:hover:bg-meta-4"
                 >
                   en
-                </Link>
+                </Button>
               </li>
               <li>
-                <Link
-                  to="#"
+                <Button
+                    onClick={() => changeLanguage('es')}
                   className="flex py-2 px-5 font-medium hover:bg-whiter hover:text-primary dark:hover:bg-meta-4"
                 >
                   es
-                </Link>
+                </Button>
               </li>
             </ul>
           </div>

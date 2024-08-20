@@ -1,13 +1,14 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layouts/DefaultLayout';
-import SelectGroupThree from "@/components/Forms/SelectGroup/SelectGroupThree";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
 import { useParams } from 'react-router-dom';
 import {Field, Input, Label, Select} from "@headlessui/react";
+import { useTranslation } from 'react-i18next';
 
 const CompanyForm = () => {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -77,7 +78,7 @@ const CompanyForm = () => {
                   <div className="w-full xl:w-1/2">
                     <Field>
                       <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                        Name
+                        {t('name')}
                       </Label>
                       <Input
                           value={name}
