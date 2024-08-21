@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-const SelectGroupThree: React.FC = () => {
+const SelectGroupThree: React.FC = (props) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+  // @ts-ignore
+  const {options} = props;
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
@@ -10,10 +12,6 @@ const SelectGroupThree: React.FC = () => {
 
   return (
     <div className="mb-5.5">
-      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        {' '}
-        Manager{' '}
-      </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
@@ -26,18 +24,11 @@ const SelectGroupThree: React.FC = () => {
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
-          <option value="" disabled className="text-body dark:text-bodydark">
-            Select your manager
-          </option>
-          <option value="Student" className="text-body dark:text-bodydark">
-            Manager 1
-          </option>
-          <option
-            value="Web Developer"
-            className="text-body dark:text-bodydark"
-          >
-            Manager 2
-          </option>
+            {options.map((option) => (
+                <option key={option.value} value={option.value}>
+                {option.text}
+                </option>
+            ))}
         </select>
 
         <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">

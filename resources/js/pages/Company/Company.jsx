@@ -57,7 +57,7 @@ const Company = () => {
             <Breadcrumb pageName="Company" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-                <DataTable data={data} column={column}/>
+                <DataTable data={data} column={column} deleteUrl="company-details"/>
             </div>
         </DefaultLayout>
     );
