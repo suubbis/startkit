@@ -1,0 +1,24 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Repository\Interfaces\{{ class }}Interface;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends BaseRepository implements {{ class }}Interface
+{
+    /**
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
+     * {{class}} constructor.
+     *
+     */
+    public function __construct()
+    {
+        //
+    }
+
+}
