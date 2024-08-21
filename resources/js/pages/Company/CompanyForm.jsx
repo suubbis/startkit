@@ -19,7 +19,7 @@ const CompanyForm = () => {
     const [address, setAddress] = useState('');
     const [website, setWebsite] = useState('');
     const [logo, setLogo] = useState('');
-    const [manager, setManager] = useState('');
+    const [manager_id, setManager] = useState('');
 
 
   useEffect(() => {
@@ -45,7 +45,8 @@ const CompanyForm = () => {
 
   const pageTitle = id ? 'Update' : 'Create';
 
-    const submitForm = () => {
+    const submitForm = (e) => {
+      e.preventDefault();
         const data = {
             name,
             abbreviation,
@@ -54,7 +55,7 @@ const CompanyForm = () => {
             address,
             website,
             logo,
-            manager,
+          manager_id,
         };
         console.log(data);
         dispatch(id ? patchRoute(`/company-details/${id}`, data, true) : postRoute('/company-details', data))
@@ -99,6 +100,7 @@ const CompanyForm = () => {
                         value={abbreviation}
                         onChange={(e) => setAbbreviation(e.target.value)}
                         type="text"
+                        maxLength={10}
                         placeholder="Enter company abbreviation"
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -189,7 +191,7 @@ const CompanyForm = () => {
                       Manager
                     </Label>
                     <Select
-                        value={manager}
+                        value={manager_id}
                         onChange={(e) => setManager(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
@@ -201,7 +203,7 @@ const CompanyForm = () => {
                 </div>
 
                 <button
-                    onClick={submitForm}
+                    onClick={(e) => submitForm(e)}
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                   {`${pageTitle} Company`}
                 </button>

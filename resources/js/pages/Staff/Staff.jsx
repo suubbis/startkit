@@ -56,7 +56,7 @@ const Staff = () => {
             <Breadcrumb pageName="Staff" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-                <DataTable data={data} column={column}/>
+                <DataTable data={data} column={column} deleteUrl="users"/>
             </div>
         </DefaultLayout>
     );
