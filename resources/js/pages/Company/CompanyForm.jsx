@@ -8,7 +8,7 @@ import {Field, Input, Label, Select} from "@headlessui/react";
 import { useTranslation } from 'react-i18next';
 
 const CompanyForm = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
 
