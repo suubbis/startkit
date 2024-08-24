@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('access_controls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('role_id')->constrained();
             $table->boolean('notification_enabled')->default(false);
             $table->boolean('schedule_monday')->default(false);
             $table->boolean('schedule_tuesday')->default(false);

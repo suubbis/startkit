@@ -183,4 +183,12 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->findById($modelId)->delete();
     }
 
+    public function uploadFile($file)
+    {
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $fileName);
+        return $fileName;
+
+    }
+
 }

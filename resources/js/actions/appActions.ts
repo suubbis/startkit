@@ -76,7 +76,8 @@ export const patchRoute = (url: string, payload: any, toast = false) => (dispatc
             return res.data;
         })
         .catch((error) => {
-            toastAlert("error", error.response);
+            console.log(error.response, "update data error");
+            toastAlert("error", error.response?.data.message);
             return error.response?.data;
         });
 };
@@ -95,6 +96,7 @@ export const getRoute = (url: string, toast = false) => (dispatch) => {
             return response.data;
         })
         .catch((error) => {
+            toastAlert("error", error.response?.data.message);
             return error.response?.data;
         });
 };

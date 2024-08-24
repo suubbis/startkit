@@ -9,8 +9,12 @@ class Permission extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'module_name'
+    ];
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'role_permissions');
     }
 }

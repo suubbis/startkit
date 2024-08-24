@@ -54,7 +54,7 @@ class SystemSettingController extends Controller
      */
     public function update(SettingRequest $request, $id): JsonResponse
     {
-        $setting = $this->systemSettingRepository->update($request->validated(), $id);
+        $setting = $this->systemSettingRepository->update($id, $request->validated());
         return $this->jsonResponse($setting, 'Setting updated successfully.');
     }
 

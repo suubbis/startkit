@@ -22,4 +22,20 @@ class AccessControlRepository extends BaseRepository implements AccessControlRep
         $this->model = new AccessControl();
     }
 
+    public function createOrUpdate($payload): Model|AccessControl
+    {
+        $accessControl = $this->model->where('role_id', $payload['role_id'])->first();
+        if ($accessControl) {
+            $accessControl->update($payload);
+        } else {
+            $this->model->create($payload);
+        }
+        return $this->model;
+
+    }
+
+    public function findByRole($id)
+    {
+        return $this->model->where('role_id', $id)->first() ?? null;
+    }
 }

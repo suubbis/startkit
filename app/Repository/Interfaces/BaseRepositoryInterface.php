@@ -78,5 +78,7 @@ interface BaseRepositoryInterface
      */
     public function deleteById(int $modelId): bool;
 
+    public function uploadFile($file);
+
 
 }

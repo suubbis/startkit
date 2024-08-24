@@ -11,7 +11,7 @@ class SettingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -34,8 +34,8 @@ class SettingRequest extends FormRequest
             'backup_schedule' => 'required|in:Hourly,Daily,Weekly,Monthly,Yearly',
             'session_expiry' => 'required|in:5 minutes,10 minutes,30 minutes,1 hour,No expiry',
             'min_password_score' => 'required|in:Weak,Fair,Strong',
-            'login_attempts' => 'required|integer|in:3,5,10',
-            'login_after_fail' => 'required|in:1 minute,5 minutes,10 minutes,30 minutes,1 hour,24 hours',
+            'allow_consecutive_login_attempts' => 'required|integer|in:3,5,10',
+            'allow_login_after_fail' => 'required|in:1 minute,5 minutes,10 minutes,30 minutes,1 hour,24 hours',
             'enable_two_factor_auth' => 'required|boolean',
         ];
     }

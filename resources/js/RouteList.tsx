@@ -9,6 +9,9 @@ import Staff from './pages/Staff/Staff';
 import NewStaff from './pages/Staff/StaffForm';
 import SystemSettingFrom from './pages/SystemSettings/SystemSettingFrom';
 import PageTitle from "@/components/PageTitle";
+import Role from  "./pages/Role/Role"
+import RoleForm from  "./pages/Role/RoleForm"
+import AccessControl from  "./pages/Role/AccessControl"
 
 class RouteList extends Component {
     render() {
@@ -89,6 +92,38 @@ class RouteList extends Component {
                             <>
                                 <PageTitle title="System Settings | Startkit" />
                                 <ProtectedRoute component={SystemSettingFrom} />
+                            </>}
+                    />
+                    <Route
+                        path="/access-control"
+                        element={
+                            <>
+                                <PageTitle title="Access Control | Startkit" />
+                                <ProtectedRoute component={AccessControl} />
+                            </>}
+                    />
+                    <Route
+                        path="/role"
+                        element={
+                            <>
+                                <PageTitle title="Role | Startkit" />
+                                <ProtectedRoute component={Role} />
+                            </>}
+                    />
+                    <Route
+                        path="/role/create"
+                        element={
+                            <>
+                                <PageTitle title="New Role | Startkit" />
+                                <ProtectedRoute component={RoleForm} />
+                            </>}
+                    />
+                    <Route
+                        path="/role/edit/:id"
+                        element={
+                            <>
+                                <PageTitle title="Update Role | Startkit" />
+                                <ProtectedRoute component={RoleForm} />
                             </>}
                     />
                 </Routes>

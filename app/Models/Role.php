@@ -9,6 +9,12 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'role_name',
+        'session_control',
+        'redirect_url',
+        'session_control'
+    ];
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class);
@@ -16,6 +22,6 @@ class Role extends Model
 
     public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class, 'role_permissions');
     }
 }

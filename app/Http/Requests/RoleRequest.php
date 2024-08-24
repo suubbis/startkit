@@ -23,6 +23,8 @@ class RoleRequest extends FormRequest
     {
         return [
             'role_name' => 'required|string|max:255,' . $this->route('role'),
+            'session_control' => 'required|string|max:255',
+            'redirect_url' => 'required|string|max:255',
         ];
     }
 }

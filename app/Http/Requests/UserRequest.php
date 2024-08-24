@@ -25,13 +25,13 @@ class UserRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->route('user'),
-            'phone_number' => 'required|string|max:15',
+            'phone_number' => 'required|string',
             'address' => 'required|string',
             'date_of_birth' => 'nullable|date',
             'supervisor_id' => 'nullable|exists:users,id',
             'role_id' => 'required|exists:roles,id',
             'view_journal_entry_info' => 'boolean',
-            'username' => 'required|string|max:255|unique:users,'. $this->route('user'),
+            'username' => 'required|string|max:255|unique:users,username,'. $this->route('user'),
             'password' => 'required|string|min:8',
         ];
     }
