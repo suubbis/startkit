@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const DataTable = (props) => {
-  const { data, column, deleteUrl } = props;
+  const { data = [], column = [], deleteUrl } = props;
   const columns = useMemo(() => column, []);
   const dispatch = useDispatch();
 
