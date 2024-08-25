@@ -12,8 +12,10 @@ import './css/simple-datatables.css';
 import {ToastContainer} from "react-toastify";
 import {I18nextProvider} from "react-i18next";
 import i18n from "@/i18n";
+import {ColorRing} from "react-loader-spinner";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -25,7 +27,14 @@ createInertiaApp({
             <React.StrictMode>
                 <I18nextProvider i18n={i18n}>
                     <Provider store={store}>
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={
+                            <ColorRing
+                            visible={true}
+                            ariaLabel="color-ring-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="color-ring-wrapper"
+                            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                        />}>
                             <RouteList />
                             <ToastContainer />
                         </Suspense>

@@ -1,42 +1,42 @@
 import DefaultLayout from "@/layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DataTable from "@/common/DataTable";
+import CustomTable from "@/common/CustomTable";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {getRoute} from "@/actions/appActions";
 
 const column = [
     {
-        Header: 'Name',
-        accessor: 'name',
+        header: 'Name',
+        accessorKey: 'name',
     },
     {
-        Header: 'Abbreviation',
-        accessor: 'abbreviation',
+        header: 'Abbreviation',
+        accessorKey: 'abbreviation',
     },
     {
-        Header: 'Address',
-        accessor: 'address',
+        header: 'Address',
+        accessorKey: 'address',
     },
     {
-        Header: 'Manager',
-        accessor: 'manager.first_name',
+        header: 'Manager',
+        accessorKey: 'manager.first_name',
     },
     {
-        Header: 'Phone',
-        accessor: 'phone',
+        header: 'Phone',
+        accessorKey: 'phone',
     },
     {
-        Header: 'Email',
-        accessor: 'email',
+        header: 'Email',
+        accessorKey: 'email',
     },
     {
-        Header: 'Website',
-        accessor: 'website',
+        header: 'Website',
+        accessorKey: 'website',
     },
     {
-        Header: 'Created Date',
-        accessor: 'created_at',
+        header: 'Created Date',
+        accessorKey: 'created_at',
     },
 ];
 
@@ -57,7 +57,7 @@ const Company = () => {
             <Breadcrumb pageName="Company" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-                <DataTable data={data} column={column} deleteUrl="company-details"/>
+                <CustomTable data={data} column={column} deleteUrl="company-details"/>
             </div>
         </DefaultLayout>
     );
