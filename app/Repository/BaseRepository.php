@@ -158,13 +158,15 @@ class BaseRepository implements BaseRepositoryInterface
      *
      * @param int $modelId
      * @param array $payload
-     * @return bool
+     * @return mixed
      */
-    public function update(int $modelId, array $payload): bool
+    public function update(int $modelId, array $payload): mixed
     {
         try {
             $model = $this->findById($modelId);
-            return $model->update($payload);
+            $model->update($payload);
+
+            return $model->fresh();
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
             return false;

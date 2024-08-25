@@ -3,12 +3,13 @@ import DefaultLayout from '../../layouts/DefaultLayout';
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Field, Input, Label, Select} from "@headlessui/react";
 import { useTranslation } from 'react-i18next';
 import PhoneWithFlags from '../../common/PhoneWithFlags';
 
 const CompanyForm = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -78,6 +79,9 @@ const CompanyForm = () => {
         dispatch(id ? patchRoute(`/company-details/${id}`, data, true) : postRoute('/company-details', data))
             .then(response => {
                 console.log(response.data);
+                if (response.status) {
+                    navigate('/company');
+                }
             })
             .catch(error => {
                 console.error('Error fetching data:', error);

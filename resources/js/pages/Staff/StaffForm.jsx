@@ -1,16 +1,15 @@
 import {useEffect, useState} from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layouts/DefaultLayout';
-import SelectGroupThree from "@/components/Forms/SelectGroup/SelectGroupThree";
 import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
 import {useDispatch} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {toastAlert} from "@/helpers/Functions";
 import {Select} from "@headlessui/react";
-import role from "@/pages/Role/Role.jsx";
-import PhoneWithFlags from "@/common/PhoneWithFlags.jsx";
+import PhoneWithFlags from "@/common/PhoneWithFlags";
 
 const StaffForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -95,7 +94,9 @@ const StaffForm = () => {
       };
       dispatch(id ? patchRoute(`/users/${id}`, data, true) : postRoute('/users', data, true))
           .then(response => {
-            console.log(response.data);
+            if (response.status) {
+              navigate('/staff');
+            }
           })
           .catch(error => {
             toastAlert('error', error.message);

@@ -12,6 +12,8 @@ const SystemSettingFrom = React.lazy(() => import('./pages/SystemSettings/System
 const PageTitle = React.lazy(() => import('@/components/PageTitle'));
 const Role = React.lazy(() => import('./pages/Role/Role'));
 const RoleForm = React.lazy(() => import('./pages/Role/RoleForm'));
+const Permission = React.lazy(() => import('./pages/Permissions/Permission'));
+const PermissionFrom = React.lazy(() => import('./pages/Permissions/PermissionForm'));
 
 class RouteList extends Component {
     render() {
@@ -124,6 +126,22 @@ class RouteList extends Component {
                             <>
                                 <PageTitle title="Update Role | Startkit" />
                                 <ProtectedRoute component={RoleForm} />
+                            </>}
+                    />
+                    <Route
+                        path="/permissions"
+                        element={
+                            <>
+                                <PageTitle title="Permissions | Startkit" />
+                                <ProtectedRoute component={Permission} />
+                            </>}
+                    />
+                    <Route
+                        path="/permissions/create"
+                        element={
+                            <>
+                                <PageTitle title="Create Permissions | Startkit" />
+                                <ProtectedRoute component={PermissionFrom} />
                             </>}
                     />
                 </Routes>

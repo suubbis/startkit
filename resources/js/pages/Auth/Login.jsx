@@ -28,7 +28,11 @@ const Login = () => {
                 if (response.status) {
                     setSession(response.data);
                     dispatch(setUserSession(response.data));
-                    navigate('/');
+                    if (response.data?.user?.role?.redirect_url !== null)
+                        navigate(response.data?.user?.role?.redirect_url);
+                    else
+                        navigate('/');
+
                 }
             })
             .catch(error => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 const sessionExpiryOptions = [
@@ -16,17 +16,14 @@ const sessionExpiryOptions = [
 
 const RoleForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [permissions, setPermissions] = useState([]);
   const [formData, setFormData] = useState({
     roleName: '',
     sessionControl: '',
     roleUrl: '',
-    permissions: {
-      dashboard: [],
-      staff: [],
-      company: [],
-      roles: [],
-    },
+    permissions: [],
   });
 
   useEffect(() => {
@@ -35,16 +32,14 @@ const RoleForm = () => {
           .then(response => {
             const data = response.data;
             console.log(data);
+
             setFormData({
               roleName: data.role_name || '',
               sessionControl: data.session_control || '',
               roleUrl: data.redirect_url || '',
-              permissions: data.permissions || {
-                dashboard: [],
-                staff: [],
-                company: [],
-                roles: [],
-              },
+              permissions: data.permissions.map((permission) => {
+                  return permission.id;
+              }) || [],
             });
           })
           .catch(error => {
@@ -52,6 +47,21 @@ const RoleForm = () => {
           });
     }
   }, [id]);
+
+useEffect(() => {
+    dispatch(getRoute(`/permissions`))
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            setPermissions(data.map((permission) => {
+                return {'value': permission.id, 'text': permission.name}
+            }));
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+}, []);
 
   // Handle input change for text inputs and select
   const handleChange = (e) => {
@@ -63,20 +73,20 @@ const RoleForm = () => {
   };
 
   // Handle checkbox change for permissions
-  const handlePermissionChange = (module, permission) => {
-    setFormData((prevData) => {
-      const modulePermissions = prevData.permissions[module];
-      return {
-        ...prevData,
-        permissions: {
-          ...prevData.permissions,
-          [module]: modulePermissions.includes(permission)
-              ? modulePermissions.filter((perm) => perm !== permission)
-              : [...modulePermissions, permission],
-        },
-      };
-    });
-  };
+    const handlePermissionChange = (permission) => {
+        setFormData((prevData) => {
+            const updatedPermissions = prevData.permissions.includes(permission)
+                ? prevData.permissions.filter((p) => p !== permission)
+                : [...prevData.permissions, permission];
+
+            return {
+                ...prevData,
+                permissions: updatedPermissions,
+            };
+        });
+
+        console.log(formData.permissions);
+    };
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -90,13 +100,27 @@ const RoleForm = () => {
         };
     dispatch(id ? patchRoute(`/roles/${id}`, data, true)  : postRoute(`/roles`, data, true))
         .then(response => {
-          const data = response.data;
-          console.log(data);
+         if (response.status) {
+           navigate('/role');
+         }
         })
         .catch(error => {
           console.error('Error fetching data:', error);
         });
   };
+
+    const handleSelectAllChange = () => {
+        setFormData((prevData) => {
+            const allPermissionsSelected = permissions.every((permission) =>
+                prevData.permissions.includes(permission.value)
+            );
+
+            return {
+                ...prevData,
+                permissions: allPermissionsSelected ? [] : permissions.map((p) => p.value),
+            };
+        });
+    };
 
   return (
       <DefaultLayout>
@@ -136,32 +160,32 @@ const RoleForm = () => {
             </div>
 
             <div className="mb-5">
-              <div className="grid grid-cols-3 gap-6">
-                {['dashboard', 'staff', 'company', 'roles'].map((module) => (
-                    <div
-                        key={module}
-                        className="rounded border-[1.5px] border-stroke bg-white p-4 shadow-sm dark:border-strokedark dark:bg-boxdark"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <label className="text-sm font-medium text-black dark:text-white capitalize">{module}</label>
-                        <input type="checkbox" className="rounded text-primary" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {['view', 'create', 'edit', 'delete', 'show'].map((permission) => (
-                            <div key={permission} className="flex items-center">
-                              <input
-                                  type="checkbox"
-                                  checked={formData.permissions[module].includes(permission)}
-                                  onChange={() => handlePermissionChange(module, permission)}
-                                  className="mr-2 rounded text-primary"
-                              />
-                              <label className="text-sm text-black dark:text-white capitalize">{permission}</label>
-                            </div>
-                        ))}
-                      </div>
-                    </div>
-                ))}
-              </div>
+                <div className="flex items-center mb-4">
+                    <input
+                        type="checkbox"
+                        checked={permissions.every((permission) =>
+                            formData.permissions.includes(permission.value)
+                        )}
+                        onChange={handleSelectAllChange}
+                        className="mr-2 rounded text-primary"
+                    />
+                    <label className="text-sm text-black dark:text-white capitalize">
+                        Select All
+                    </label>
+                </div>
+                <div className="grid grid-cols-5 gap-6">
+                    {permissions.map((permission) => (
+                        <div key={permission.value} className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={formData.permissions.includes(permission.value)}
+                                onChange={() => handlePermissionChange(permission.value)}
+                                className="mr-2 rounded text-primary"
+                            />
+                            <label className="text-sm text-black dark:text-white capitalize">{permission.text}</label>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <button
@@ -169,7 +193,7 @@ const RoleForm = () => {
                 type="button"
                 className="w-full rounded bg-primary p-3 font-medium text-white hover:bg-opacity-90"
             >
-              {id ? "Update Role" : "Create Role"}
+                {id ? "Update Role" : "Create Role"}
             </button>
         </div>
       </DefaultLayout>

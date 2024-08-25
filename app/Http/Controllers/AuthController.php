@@ -36,7 +36,7 @@ class AuthController extends Controller
         }
         $user = auth()->user();
         $token = $user->createToken('API Token')->plainTextToken;
-
+        $user->load('role');
         return $this->jsonResponse([
             'token' => $token,
             'user' => $user,

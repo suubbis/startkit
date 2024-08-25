@@ -35,10 +35,8 @@ class RoleController extends Controller
         $role = $this->roleRepository->create($request->validated());
 
         if ($request->has('permissions')) {
-            //permission ids are passed in the request
-
-//            $permissions = Permission::whereIn('id', $request->permissions)->get();
-            $role->permissions()->attach([]);
+            $permissions = Permission::whereIn('id', $request->permissions)->select('id')->get();
+            $role->permissions()->attach($permissions);
         }
         return $this->jsonResponse($role, 'Role created successfully.', 201);
     }
@@ -50,7 +48,7 @@ class RoleController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $role = $this->roleRepository->findById($id);
+        $role = $this->roleRepository->findById($id,['*'],['permissions']);
         return $this->jsonResponse($role, 'Role retrieved successfully.');
     }
 
@@ -63,6 +61,10 @@ class RoleController extends Controller
     public function update(RoleRequest $request, $id): JsonResponse
     {
         $role = $this->roleRepository->update($id, $request->validated());
+        if ($request->has('permissions')) {
+            $permissions = Permission::whereIn('id', $request->permissions)->select('id')->get();
+            $role->permissions()->sync($permissions);
+        }
         return $this->jsonResponse($role, 'Role updated successfully.');
     }
 
