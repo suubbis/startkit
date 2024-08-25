@@ -68,6 +68,12 @@ class User extends Authenticatable
 
     }
 
+    public function supervisor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
+
+    }
+
     public function companyDetail(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(CompanyDetail::class, 'manager_id');

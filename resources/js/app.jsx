@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {Suspense, useEffect} from 'react';
 import '../css/app.css'
 import '../css/satoshi.css'
 import { createRoot } from 'react-dom/client';
@@ -25,13 +25,12 @@ createInertiaApp({
             <React.StrictMode>
                 <I18nextProvider i18n={i18n}>
                     <Provider store={store}>
-                        <RouteList />
-                        <ToastContainer />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <RouteList />
+                            <ToastContainer />
+                        </Suspense>
                     </Provider>
                 </I18nextProvider>
-                {/*<Router>*/}
-                {/*    <App {...props} />*/}
-                {/*</Router>*/}
             </React.StrictMode>
         );
     },

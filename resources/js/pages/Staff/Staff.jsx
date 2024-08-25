@@ -20,11 +20,11 @@ const column = [
     },
     {
         Header: 'Supervisor',
-        accessor: 'supervisor',
+        accessor: 'supervisor.first_name',
     },
     {
         Header: 'Role',
-        accessor: 'role',
+        accessor: 'role.role_name',
     },
     {
         Header: 'Username',

@@ -6,6 +6,7 @@ import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
 import { useParams } from 'react-router-dom';
 import {Field, Input, Label, Select} from "@headlessui/react";
 import { useTranslation } from 'react-i18next';
+import PhoneWithFlags from '../../common/PhoneWithFlags';
 
 const CompanyForm = () => {
   const { t } = useTranslation();
@@ -151,13 +152,13 @@ const CompanyForm = () => {
                     <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Phone
                     </Label>
-                    <Input
+                    <PhoneWithFlags
+                        international
+                        placeholder="Enter phone number"
+                        countryCallingCodeEditable={false}
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        type="text"
-                        placeholder="(321) 5555-0115"
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                        onChange={setPhone}/>
+
                     </Field>
                   </div>
                 </div>
@@ -196,41 +197,44 @@ const CompanyForm = () => {
                 <div className="mb-5.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <Field>
-                    <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Logo
-                    </Label>
-                    <Input
-                        value={logo}
-                        type="file"
-                        accept="image/*"
-                        placeholder="Upload your logo"
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                      <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Logo
+                      </Label>
+                      <Input
+                          value={logo}
+                          type="file"
+                          accept="image/*"
+                          placeholder="Upload your logo"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      />
                     </Field>
                   </div>
-                  <Field>
-                    <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Manager
-                    </Label>
-                    <Select
-                        value={manager_id}
-                        onChange={(e) => setManager(e.target.value)}
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    >
-                      <option value="">Select Manager</option>
-                      {managerOptions && managerOptions.map((option) => {
-                        return <option value={option.value}>{option.text}</option>
-                      })
-                      }
-                    </Select>
-                  </Field>
+                  <div className="w-full xl:w-1/2">
+                    <Field>
+                      <Label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        Manager
+                      </Label>
+                      <Select
+                          name="manager_id"
+                          value={manager_id}
+                          onChange={(e) => setManager(e.target.value)}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select Manager</option>
+                        {managerOptions && managerOptions.map((option) => {
+                          return <option value={option.value}>{option.text}</option>
+                        })
+                        }
+                      </Select>
+                    </Field>
+                  </div>
                 </div>
 
-                <button
-                    onClick={(e) => submitForm(e)}
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                  {`${pageTitle} Company`}
-                </button>
+                  <button
+                      onClick={(e) => submitForm(e)}
+                      className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                    {`${pageTitle} Company`}
+                  </button>
                 </div>
             </form>
           </div>

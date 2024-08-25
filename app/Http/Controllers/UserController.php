@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $users = $this->userRepository->all();
+        $users = $this->userRepository->all(['*'],['role', 'supervisor']);
         return $this->jsonResponse($users, 'Users retrieved successfully.');
     }
 

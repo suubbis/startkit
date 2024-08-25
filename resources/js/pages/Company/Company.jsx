@@ -20,7 +20,7 @@ const column = [
     },
     {
         Header: 'Manager',
-        accessor: 'manager_id',
+        accessor: 'manager.first_name',
     },
     {
         Header: 'Phone',

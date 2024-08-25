@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import {toastAlert} from "@/helpers/Functions";
 import {Select} from "@headlessui/react";
 import role from "@/pages/Role/Role.jsx";
+import PhoneWithFlags from "@/common/PhoneWithFlags.jsx";
 
 const StaffForm = () => {
   const [formData, setFormData] = useState({
@@ -193,14 +194,13 @@ const StaffForm = () => {
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Phone Number
                       </label>
-                      <input
-                          type="text"
-                          name="phoneNumber"
+                      <PhoneWithFlags
+                          international
+                          placeholder="Enter phone number"
+                          countryCallingCodeEditable={false}
                           value={formData.phoneNumber}
-                          onChange={handleInputChange}
-                          placeholder="Enter Phone Number"
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      />
+                          onChange={(phone) => setFormData({...formData, phoneNumber: phone})}/>
+
                     </div>
                   </div>
 
@@ -244,7 +244,7 @@ const StaffForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
-                        <option value="">Select Manager</option>
+                        <option value="">Select Supervisor</option>
                         {supervisorOptions && supervisorOptions.map((option) => {
                           return <option value={option.value}>{option.text}</option>
                         })
@@ -261,7 +261,7 @@ const StaffForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
-                        <option value="">Select Manager</option>
+                        <option value="">Select Role</option>
                         {roleOptions && roleOptions.map((option) => {
                           return <option value={option.value}>{option.text}</option>
                         })
