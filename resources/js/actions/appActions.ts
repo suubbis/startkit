@@ -12,6 +12,7 @@ import {
 } from "@/helpers/Functions";
 import History from "../utils/history";
 
+
 export const getUserInfo = () => (dispatch) => {
     dispatch({
         type: GET_SESSION,
@@ -40,7 +41,7 @@ export const getUserData = () => (dispatch) => {
             })
             .catch((error) => {
                 if (error?.response?.status === 401 && !destroySession()) {
-                    History.push("/login");
+                    window.location.href = "/login";
                 }
             });
     }
@@ -58,6 +59,10 @@ export const postRoute = (url: string, payload: any, toast = false) => (dispatch
             return response.data;
         })
         .catch((error) => {
+            if (error.response.status == 401) {
+                destroySession();
+                window.location.href = "/login";
+            }
             toastAlert("error", error.response.data.message);
 
             return error?.response?.data;
@@ -76,6 +81,10 @@ export const patchRoute = (url: string, payload: any, toast = false) => (dispatc
             return res.data;
         })
         .catch((error) => {
+            if (error.response.status == 401) {
+                destroySession();
+                window.location.href = "/login";
+            }
             console.log(error.response, "update data error");
             toastAlert("error", error.response?.data.message);
             return error.response?.data;
@@ -96,6 +105,11 @@ export const getRoute = (url: string, toast = false) => (dispatch) => {
             return response.data;
         })
         .catch((error) => {
+            console.log(error.response, "listing data error");
+            if (error.response.status == 401) {
+                destroySession();
+                window.location.href = "/login";
+            }
             toastAlert("error", error.response?.data.message);
             return error.response?.data;
         });
@@ -134,6 +148,10 @@ export const deleteRoute = (url: string, toast = false) => (dispatch) => {
             return response.data;
         })
         .catch((error) => {
+            if (error.response.status == 401) {
+                destroySession();
+                window.location.href = "/login";
+            }
             toastAlert("error", error.response);
             return error.response?.data;
         });
