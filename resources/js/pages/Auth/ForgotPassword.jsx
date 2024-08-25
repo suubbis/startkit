@@ -1,4 +1,4 @@
-import GuestLayout from '@/Layouts/GuestLayout';
+import GuestLayout from '@/layouts/GuestLayout';
 import InputError from '@/common/InputError';
 import PrimaryButton from '@/common/PrimaryButton';
 import TextInput from '@/common/TextInput';

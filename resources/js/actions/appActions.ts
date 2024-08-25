@@ -59,10 +59,10 @@ export const postRoute = (url: string, payload: any, toast = false) => (dispatch
             return response.data;
         })
         .catch((error) => {
-            if (error.response.status == 401) {
-                destroySession();
-                window.location.href = "/login";
-            }
+            // if (error.response.status == 401) {
+            //     destroySession();
+            //     window.location.href = "/login";
+            // }
             toastAlert("error", error.response.data.message);
 
             return error?.response?.data;

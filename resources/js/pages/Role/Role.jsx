@@ -38,7 +38,7 @@ const Role = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Company" />
+            <Breadcrumb pageName="Role" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
                 <CustomTable data={data} column={column} deleteUrl="roles"/>
