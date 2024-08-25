@@ -17,3 +17,5 @@ Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('company-details', CompanyDetailController::class);
 Route::apiResource('system-settings', SystemSettingController::class);
 Route::apiResource('access-controls', AccessControlController::class);
+
+Route::post('upload-csv', [UserController::class, 'uploadCsv']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Repository\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use League\Csv\Reader;
 
 class UserController extends Controller
 {
@@ -70,5 +71,28 @@ class UserController extends Controller
     {
         $this->userRepository->deleteById($id);
         return $this->jsonResponse(null, 'User deleted successfully.');
+    }
+
+    public function uploadCsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $path = $request->file('csv_file')->getRealPath();
+        $csv = Reader::createFromPath($path, 'r');
+        $csv->setHeaderOffset(0); // Set first row as header
+
+        $records = $csv->getRecords();
+
+        foreach ($records as $record) {
+            DB::table('your_table_name')->insert([
+                'column1' => $record['csv_column1'],
+                'column2' => $record['csv_column2'],
+                // Continue mapping as needed
+            ]);
+        }
+
+        return back()->with('success', 'CSV uploaded and data inserted successfully!');
     }
 }
