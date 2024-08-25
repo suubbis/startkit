@@ -66,9 +66,9 @@ interface BaseRepositoryInterface
      *
      * @param int $modelId
      * @param array $payload
-     * @return bool
+     * @return mixed
      */
-    public function update(int $modelId, array $payload): bool;
+    public function update(int $modelId, array $payload): mixed;
 
     /**
      * Delete model by id.

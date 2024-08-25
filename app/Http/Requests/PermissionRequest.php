@@ -23,7 +23,6 @@ class PermissionRequest extends FormRequest
     {
         return [
             "name"  => 'required|string|max:200|unique:permissions,name,'.$this->route('permission'),
-            'role_id' => 'required|exists:roles,id',
         ];
     }
 }
