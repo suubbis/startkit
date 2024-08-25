@@ -12,6 +12,18 @@ class AccessControlSeeder extends Seeder
      */
     public function run(): void
     {
-        AccessControl::factory()->count(10)->create();
+        AccessControl::create([
+            'role_id' => 1, // Assuming 1 is the ID for the role Admin
+            'notification_enabled' => true,
+            'schedule_monday' => true,
+            'schedule_tuesday' => true,
+            'schedule_wednesday' => true,
+            'schedule_thursday' => true,
+            'schedule_friday' => true,
+            'schedule_saturday' => true,
+            'schedule_sunday' => true,
+            'start_time' => '00:00:00',
+            'end_time' => '24:00:00',
+        ]);
     }
 }

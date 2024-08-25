@@ -12,6 +12,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::factory()->count(10)->create();
+        Role::create(['role_name' => 'Admin', 'session_control' => '5 minutes', 'redirect_url' => '/']);
+        Role::create(['role_name' => 'Manager', 'session_control' => '5 minutes', 'redirect_url' => '/']);
+        Role::create(['role_name' => 'User', 'session_control' => '5 minutes', 'redirect_url' => '/']);
     }
 }

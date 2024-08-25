@@ -14,7 +14,23 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::factory()->count(10)->create();
-        Role::factory()->count(10)->create();
+        $permissions = [
+            ['name' => 'New'],
+            ['name' => 'Save'],
+            ['name' => 'Submit'],
+            ['name' => 'Update'],
+            ['name' => 'View (Global)'],
+            ['name' => 'View (Own)'],
+            ['name' => 'Cancel'],
+            ['name' => 'Delete'],
+            ['name' => 'Print'],
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::create($permission);
+        }
+
+        $role = Role::where('role_name', 'Admin')->first();
+        $role->permissions()->sync(Permission::all());
     }
 }
