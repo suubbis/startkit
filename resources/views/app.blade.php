@@ -11,6 +11,7 @@
         @viteReactRefresh
         @vite(['resources/js/app.jsx'])
         @inertiaHead
+        @csrf
     </head>
 
     <body
