@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('role_name');
             $table->string('session_control')->nullable();
             $table->string('redirect_url')->nullable();
-            $table->enum('session_control', ['Default', '5 minutes', '10 minutes', '30 minutes', '1 hour', 'No expiry'])->default('Default');
             $table->timestamps();
         });
     }
