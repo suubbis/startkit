@@ -213,3 +213,7 @@ span.flatpickr-weekday,
 [x-cloak] {
     display: none !important;
 }
+
+input.PhoneInputInput {
+    @apply border-stroke py-3;
+}

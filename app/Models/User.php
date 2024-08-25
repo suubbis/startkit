@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\WelcomeEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,6 +56,13 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->notify(new WelcomeEmail());
+        });
+    }
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
@@ -65,6 +73,12 @@ class User extends Authenticatable
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
+
+    }
+
+    public function supervisor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
 
     }
 

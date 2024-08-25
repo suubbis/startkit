@@ -1,42 +1,42 @@
 import DefaultLayout from "@/layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DataTable from "@/common/DataTable";
+import CustomTable from "@/common/CustomTable";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {getRoute} from "@/actions/appActions";
 
 const column = [
     {
-        Header: 'First Name',
-        accessor: 'first_name',
+        header: 'First Name',
+        accessorKey: 'first_name',
     },
     {
-        Header: 'Email',
-        accessor: 'email',
+        header: 'Email',
+        accessorKey: 'email',
     },
     {
-        Header: 'Phone Number',
-        accessor: 'phone_number',
+        header: 'Phone Number',
+        accessorKey: 'phone_number',
     },
     {
-        Header: 'Supervisor',
-        accessor: 'supervisor',
+        header: 'Supervisor',
+        accessorKey: 'supervisor.first_name',
     },
     {
-        Header: 'Role',
-        accessor: 'role',
+        header: 'Role',
+        accessorKey: 'role.role_name',
     },
     {
-        Header: 'Username',
-        accessor: 'username',
+        header: 'Username',
+        accessorKey: 'username',
     },
     {
-        Header: 'Date of Birth',
-        accessor: 'date_of_birth',
+        header: 'Date of Birth',
+        accessorKey: 'date_of_birth',
     },
     {
-        Header: 'Created Date',
-        accessor: 'created_at',
+        header: 'Created Date',
+        accessorKey: 'created_at',
     },
 ];
 const Staff = () => {
@@ -56,7 +56,7 @@ const Staff = () => {
             <Breadcrumb pageName="Staff" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-                <DataTable data={data} column={column} deleteUrl="users"/>
+                <CustomTable data={data} column={column} deleteUrl="users"/>
             </div>
         </DefaultLayout>
     );

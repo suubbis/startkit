@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {NotProtectedRoute, ProtectedRoute} from "./utils/Routes";
-import Login from "./pages/Auth/Login";
-import Dashboard from "./pages/Dashboard";
-import Company from './pages/Company/Company';
-import NewCompany from './pages/Company/CompanyForm';
-import Staff from './pages/Staff/Staff';
-import NewStaff from './pages/Staff/StaffForm';
-import SystemSettingFrom from './pages/SystemSettings/SystemSettingFrom';
-import PageTitle from "@/components/PageTitle";
-import Role from  "./pages/Role/Role"
-import RoleForm from  "./pages/Role/RoleForm"
-import AccessControl from  "./pages/Role/AccessControl"
+const AccessControl = React.lazy(() => import('./pages/Role/AccessControl'));
+const Login = React.lazy(() => import('./pages/Auth/Login'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Company = React.lazy(() => import('./pages/Company/Company'));
+const NewCompany = React.lazy(() => import('./pages/Company/CompanyForm'));
+const Staff = React.lazy(() => import('./pages/Staff/Staff'));
+const NewStaff = React.lazy(() => import('./pages/Staff/StaffForm'));
+const SystemSettingFrom = React.lazy(() => import('./pages/SystemSettings/SystemSettingFrom'));
+const PageTitle = React.lazy(() => import('@/components/PageTitle'));
+const Role = React.lazy(() => import('./pages/Role/Role'));
+const RoleForm = React.lazy(() => import('./pages/Role/RoleForm'));
 
 class RouteList extends Component {
     render() {

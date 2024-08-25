@@ -1,26 +1,26 @@
 import DefaultLayout from "@/layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DataTable from "@/common/DataTable";
+import CustomTable from "@/common/CustomTable";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {getRoute} from "@/actions/appActions";
 
 const column = [
     {
-        Header: 'Name',
-        accessor: 'role_name',
+        header: 'Name',
+        accessorKey: 'role_name',
     },
     {
-        Header: 'Session',
-        accessor: 'session_control',
+        header: 'Session',
+        accessorKey: 'session_control',
     },
     {
-        Header: 'Redirect Url',
-        accessor: 'redirect_url',
+        header: 'Redirect Url',
+        accessorKey: 'redirect_url',
     },
     {
-        Header: 'Created Date',
-        accessor: 'created_at',
+        header: 'Created Date',
+        accessorKey: 'created_at',
     },
 ];
 
@@ -41,7 +41,7 @@ const Role = () => {
             <Breadcrumb pageName="Company" />
 
             <div className="flex flex-col gap-5 md:gap-7 2xl:gap-10">
-                <DataTable data={data} column={column} deleteUrl="roles"/>
+                <CustomTable data={data} column={column} deleteUrl="roles"/>
             </div>
         </DefaultLayout>
     );

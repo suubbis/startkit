@@ -20,7 +20,7 @@ class CompanyDetailController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $companys = $this->companyDetailRepository->all();
+        $companys = $this->companyDetailRepository->all(['*'],['manager']);
         return $this->jsonResponse($companys, 'Company retrieved successfully.');
     }
 
