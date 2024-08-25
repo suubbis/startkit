@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import {useDispatch} from "react-redux";
-import {postRoute} from "@/actions/appActions";
+import {getRoute, patchRoute} from "@/actions/appActions";
 
 const dateFormatOptions = [
   { value: 'YYYY-MM-DD', text: 'YYYY-MM-DD' },
@@ -42,9 +42,9 @@ const backupScheduleOptions = [
 ];
 
 const sessionExpiryOptions = [
-  { value: '5 minutes', text: '5 minutes' },
-  { value: '10 minutes', text: '10 minutes' },
-  { value: '30 minutes', text: '30 minutes' },
+  { value: '5 minutes', text: '5 Minutes' },
+  { value: '10 minutes', text: '10 Minutes' },
+  { value: '30 minutes', text: '30 Minutes' },
   { value: '1 hour', text: '1 hour' },
   { value: 'No expiry', text: 'No expiry' },
 ];
@@ -62,22 +62,39 @@ const loginAttemptsOptions = [
 ];
 
 const loginFailDelayOptions = [
-  { value: '1 Minute', text: '1 Minute' },
-  { value: '5 Minutes', text: '5 Minutes' },
-  { value: '10 Minutes', text: '10 Minutes' },
-  { value: '30 Minutes', text: '30 Minutes' },
-  { value: '1 Hour', text: '1 Hour' },
-  { value: '24 Hours', text: '24 Hours' },
+  { value: '1 minute', text: '1 Minute' },
+  { value: '5 minutes', text: '5 Minutes' },
+  { value: '10 minutes', text: '10 Minutes' },
+  { value: '30 minutes', text: '30 Minutes' },
+  { value: '1 hour', text: '1 Hour' },
+  { value: '24 hours', text: '24 Hours' },
 ];
 
-const fetchCurrencyOptions = async () => {
-  const response = await fetch('https://restcountries.com/v3.1/all');
-  const data = await response.json();
-  return data.map(country => ({
-    value: country.currencies?.symbol || '',
-    text: country.currencies?.name || '',
-  }));
-};
+const currencyAndSymbolsOptions = [
+    { value: '$', text: 'USD' , name: 'Dollar'},
+    { value: '€', text: 'EUR' , name: 'Euro'},
+    { value: '£', text: 'GBP' , name: 'Pound'},
+    { value: '¥', text: 'JPY' , name: 'Yen'},
+];
+
+// const fetchCurrencyOptions = async () => {
+//   const response = await fetch('https://restcountries.com/v3.1/all');
+//   const data = await response.json();
+//   console.log(data[0], 'country')
+//   return data.map(country => {
+//     console.log(country.currencies, 'currencies');
+//     if (country.currencies){
+//       const currencyKey = Object.keys(country.currencies)[0] ?? null;
+//       const option = {
+//         value: country.currencies[currencyKey].symbol || '',
+//         text: country.currencies[currencyKey].name || '',
+//       }
+//       console.log(option, 'option');
+//       return option;
+//     }
+//
+//   });
+// };
 
 const SystemSettingForm = () => {
   const [formData, setFormData] = useState({
@@ -93,6 +110,8 @@ const SystemSettingForm = () => {
     minPasswordScore: '',
     loginAttempts: '',
     loginFailDelay: '',
+    currencySymbol: '',
+    currencyName: '',
     twoFactorAuth: false,
   });
   const dispatch = useDispatch();
@@ -100,7 +119,8 @@ const SystemSettingForm = () => {
 
   useEffect(() => {
     const loadCurrencyOptions = async () => {
-      const options = await fetchCurrencyOptions();
+      // const options = await fetchCurrencyOptions();
+      const options = currencyAndSymbolsOptions;
       console.log(options)
       setCurrencyOptions(options);
     };
@@ -113,6 +133,15 @@ const SystemSettingForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleCurrencyChange = (e) => {
+    const { name, value } = e.target;
+    const currencyOption = currencyOptions.find(option => option.value === value);
+    const symbol = currencyOption?.value ?? '';
+    const defaultCurrency = currencyOption?.text ?? '';
+    const currencyName = currencyOption?.name ?? '';
+    setFormData((prev) => ({ ...prev, defaultCurrency: defaultCurrency, currencyName: currencyName, currencySymbol: symbol }));
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setFormData((prev) => ({ ...prev, [name]: checked }));
@@ -120,8 +149,25 @@ const SystemSettingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = {
+        date_format: formData.dateFormat,
+        number_format: formData.numberFormat,
+        time_format: formData.timeFormat,
+        list_table_format: formData.listTableFormat,
+        id_format: formData.idFormat,
+        default_currency: formData.defaultCurrency,
+        usage_format: formData.usageFormat,
+        backup_schedule: formData.backupSchedule,
+        session_expiry: formData.sessionExpiry,
+        min_password_score: formData.minPasswordScore,
+        allow_consecutive_login_attempts: formData.loginAttempts,
+        allow_login_after_fail: formData.loginFailDelay,
+        enable_two_factor_auth: formData.twoFactorAuth,
+        currency_symbol: formData.currencySymbol,
+        currency_name: formData.currencyName,
+    }
     console.log(formData);
-    dispatch(postRoute('/system-settings', formData))
+    dispatch(patchRoute('/system-settings/1', data, true))
         .then(response => {
             console.log(response);
         })
@@ -130,6 +176,34 @@ const SystemSettingForm = () => {
         })
   }
 
+  useEffect(() => {
+    dispatch(getRoute('/system-settings/1'))
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+          setFormData({
+            dateFormat: data.date_format || '',
+            numberFormat: data.number_format || '',
+            timeFormat: data.time_format || '',
+            listTableFormat: data.list_table_format || '',
+            idFormat: data.id_format || '',
+            defaultCurrency: data.default_currency || '',
+            usageFormat: data.usage_format || '',
+            backupSchedule: data.backup_schedule || '',
+            sessionExpiry: data.session_expiry || '',
+            minPasswordScore: data.min_password_score || '',
+            loginAttempts: data.allow_consecutive_login_attempts || '',
+            loginFailDelay: data.allow_login_after_fail || '',
+            twoFactorAuth: data.enable_two_factor_auth || false,
+            currencySymbol: data.currency_symbol || '',
+            currencyName: data.currency_name || '',
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+  }, []);
+
   return (
       <DefaultLayout>
         <Breadcrumb pageName="System Settings" />
@@ -137,7 +211,6 @@ const SystemSettingForm = () => {
         <div className="sm:grid-cols-2">
           <div className="flex flex-col gap-9">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <form action="#">
                 <div className="p-6.5">
                   {/* Basic Information Card */}
                   <h3 className="mb-5 text-lg font-semibold text-black dark:text-white">Basic Information</h3>
@@ -153,6 +226,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {dateFormatOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -169,6 +243,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {numberFormatOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -187,6 +262,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {timeFormatOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -203,6 +279,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {listTableFormatOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -221,6 +298,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {idFormatOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -233,10 +311,11 @@ const SystemSettingForm = () => {
                       </label>
                       <select
                           name="defaultCurrency"
-                          value={formData.defaultCurrency}
-                          onChange={handleInputChange}
+                          value={formData.currencySymbol}
+                          onChange={handleCurrencyChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {currencyOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -255,6 +334,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         <option value="Currency Name">Currency Name</option>
                         <option value="Currency Symbol">Currency Symbol</option>
                       </select>
@@ -270,6 +350,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {backupScheduleOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -295,6 +376,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {sessionExpiryOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -314,6 +396,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {minPasswordScoreOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -332,6 +415,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {loginAttemptsOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -348,6 +432,7 @@ const SystemSettingForm = () => {
                           onChange={handleInputChange}
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       >
+                        <option value="">Select Option</option>
                         {loginFailDelayOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.text}</option>
                         ))}
@@ -370,14 +455,14 @@ const SystemSettingForm = () => {
 
                   <div className="mt-5">
                     <button
-                        type="submit"
+                        onClick={handleSubmit}
+                        type="button"
                         className="inline-flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     >
                       Save Changes
                     </button>
                   </div>
                 </div>
-              </form>
             </div>
           </div>
         </div>

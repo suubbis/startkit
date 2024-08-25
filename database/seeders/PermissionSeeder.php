@@ -14,11 +14,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = Role::all();
-
-        foreach ($roles as $role) {
-            Permission::create(['role_id' => $role->id, 'permission_name' => 'View Dashboard']);
-            Permission::create(['role_id' => $role->id, 'permission_name' => 'Manage Users']);
-        }
+        Permission::factory()->count(10)->create();
+        Role::factory()->count(10)->create();
     }
 }

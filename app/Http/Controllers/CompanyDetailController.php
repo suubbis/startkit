@@ -54,7 +54,7 @@ class CompanyDetailController extends Controller
      */
     public function update(CompanyRequest $request, $id): JsonResponse
     {
-        $company = $this->companyDetailRepository->update($request->validated(), $id);
+        $company = $this->companyDetailRepository->update($id, $request->validated());
         return $this->jsonResponse($company, 'Company updated successfully.');
     }
 

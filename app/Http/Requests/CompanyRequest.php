@@ -24,10 +24,10 @@ class CompanyRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'abbreviation' => 'required|string|max:10',
-            'logo' => 'nullable|image|max:1024',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'address' => 'required|string|max:255',
             'manager_id' => 'required|exists:users,id',
-            'phone' => 'required|string|max:15|unique:company_details,phone,' . $this->route('company_detail').'|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'phone' => 'required|string|unique:company_details,phone,' . $this->route('company_detail').'|regex:/^([0-9\s\-\+\(\)]*)$/',
             'email' => 'required|email|max:255|unique:company_details,email,' . $this->route('company_detail'),
             'website' => 'nullable|url|max:255',
         ];

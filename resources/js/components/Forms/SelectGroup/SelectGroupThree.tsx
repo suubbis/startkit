@@ -4,7 +4,7 @@ const SelectGroupThree: React.FC = (props) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
   // @ts-ignore
-  const {options} = props;
+  const {options, onC} = props;
 
   const changeTextColor = () => {
     setIsOptionSelected(true);

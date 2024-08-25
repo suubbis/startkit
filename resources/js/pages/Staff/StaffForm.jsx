@@ -6,6 +6,8 @@ import {getRoute, patchRoute, postRoute} from "@/actions/appActions";
 import {useDispatch} from "react-redux";
 import {useParams} from "react-router-dom";
 import {toastAlert} from "@/helpers/Functions";
+import {Select} from "@headlessui/react";
+import role from "@/pages/Role/Role.jsx";
 
 const StaffForm = () => {
   const [formData, setFormData] = useState({
@@ -23,19 +25,9 @@ const StaffForm = () => {
   });
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [supervisorOptions, setSupervisorOptions] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
 
-  const supervisorOptions = [
-    { value: '', text: 'Select Supervisor' },
-    { value: '1', text: 'Supervisor 1' },
-    { value: '2', text: 'Supervisor 2' },
-  ];
-
-  const roleOptions = [
-    { value: '', text: 'Select Role' },
-    { value: 'admin', text: 'Administrator' },
-    { value: 'editor', text: 'Editor' },
-    { value: 'viewer', text: 'Viewer' },
-  ];
   const { id } = useParams();
 
   useEffect(() => {
@@ -87,12 +79,20 @@ const StaffForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Here, you would send formData to your backend for processing (create or update)
-      console.log('Submitting:', formData);
-      // Replace with actual API call
-      // const response = await apiCall(formData);
-
-      dispatch(id ? patchRoute(`/users/${id}`, formData, true) : postRoute('/users', formData))
+      const data = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        phone_number: formData.phoneNumber,
+        address: formData.address,
+        date_of_birth: formData.dateOfBirth,
+        supervisor_id: formData.supervisor,
+        role_id: formData.role,
+        username: formData.username,
+        password: formData.password,
+        send_notification: formData.sendNotification,
+      };
+      dispatch(id ? patchRoute(`/users/${id}`, data, true) : postRoute('/users', data, true))
           .then(response => {
             console.log(response.data);
           })
@@ -105,6 +105,36 @@ const StaffForm = () => {
       toastAlert('error', error.message);
     }
   };
+
+  useEffect(() => {
+    dispatch(getRoute(`/users`))
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+          setSupervisorOptions(data.map((user) => {
+            return {'value': user.id, 'text': user.first_name+' '+user.last_name}
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
+  }, []);
+
+  useEffect(() => {
+    dispatch(getRoute(`/roles`))
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+          setRoleOptions(data.map((role) => {
+            return {'value': role.id, 'text': role.role_name}
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+
+  }, []);
 
   return (
       <DefaultLayout>
@@ -193,7 +223,7 @@ const StaffForm = () => {
                         Date of Birth
                       </label>
                       <input
-                          type="text"
+                          type="date"
                           name="dateOfBirth"
                           value={formData.dateOfBirth}
                           onChange={handleInputChange}
@@ -208,23 +238,35 @@ const StaffForm = () => {
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Supervisor
                       </label>
-                      <SelectGroupThree
+                      <Select
                           name="supervisor"
                           value={formData.supervisor}
-                          onChange={(value) => setFormData({ ...formData, supervisor: value })}
-                          options={supervisorOptions}
-                      />
+                          onChange={handleInputChange}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select Manager</option>
+                        {supervisorOptions && supervisorOptions.map((option) => {
+                          return <option value={option.value}>{option.text}</option>
+                        })
+                        }
+                      </Select>
                     </div>
                     <div className="w-full xl:w-1/2">
                       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                         Role
                       </label>
-                      <SelectGroupThree
+                      <Select
                           name="role"
                           value={formData.role}
-                          onChange={(value) => setFormData({ ...formData, role: value })}
-                          options={roleOptions}
-                      />
+                          onChange={handleInputChange}
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        <option value="">Select Manager</option>
+                        {roleOptions && roleOptions.map((option) => {
+                          return <option value={option.value}>{option.text}</option>
+                        })
+                        }
+                      </Select>
                     </div>
                   </div>
 

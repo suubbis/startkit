@@ -31,7 +31,10 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): JsonResponse
     {
-        $user = $this->userRepository->create($request->validated());
+        $user = $this->userRepository->create($request->all());
+        if (!$user) {
+            return $this->jsonResponse(null, 'User not created.', 500);
+        }
         return $this->jsonResponse($user, 'User created successfully.', 201);
     }
 
@@ -54,7 +57,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id): JsonResponse
     {
-        $user = $this->userRepository->update($request->validated(), $id);
+        $user = $this->userRepository->update($id, $request->validated());
         return $this->jsonResponse($user, 'User updated successfully.');
     }
 

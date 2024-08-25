@@ -8,7 +8,7 @@ import {Field, Input, Label, Select} from "@headlessui/react";
 import { useTranslation } from 'react-i18next';
 
 const CompanyForm = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -20,6 +20,7 @@ const CompanyForm = () => {
     const [website, setWebsite] = useState('');
     const [logo, setLogo] = useState('');
     const [manager_id, setManager] = useState('');
+    const [managerOptions, setManagerOptions] = useState('');
 
 
   useEffect(() => {
@@ -42,6 +43,21 @@ const CompanyForm = () => {
           });
     }
   }, [id]);
+
+  useEffect(() => {
+      dispatch(getRoute(`/users`))
+            .then(response => {
+              const data = response.data;
+                console.log(data);
+                setManagerOptions(data.map((user) => {
+                  return {'value': user.id, 'text': user.first_name+' '+user.last_name}
+                }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+
+  }, []);
 
   const pageTitle = id ? 'Update' : 'Create';
 
@@ -66,6 +82,12 @@ const CompanyForm = () => {
                 console.error('Error fetching data:', error);
             });
     }
+
+  const handleFileChange = (event) => {
+      event.preventDefault();
+    const file = event.target.files[0];
+    setLogo(file);
+  };
   return (
     <DefaultLayout>
       <Breadcrumb pageName={`${pageTitle} Company`} />
@@ -179,8 +201,8 @@ const CompanyForm = () => {
                     </Label>
                     <Input
                         value={logo}
-                        onChange={(e) => setLogo(e.target.value)}
                         type="file"
+                        accept="image/*"
                         placeholder="Upload your logo"
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -195,9 +217,11 @@ const CompanyForm = () => {
                         onChange={(e) => setManager(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
-                        <option value="1">Manager 1</option>
-                        <option value="2">Manager 2</option>
-                        <option value="3">Manager 3</option>
+                      <option value="">Select Manager</option>
+                      {managerOptions && managerOptions.map((option) => {
+                        return <option value={option.value}>{option.text}</option>
+                      })
+                      }
                     </Select>
                   </Field>
                 </div>

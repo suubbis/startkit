@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\Permission;
 use App\Repository\Interfaces\RoleRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class RoleController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->all(['*'],['permissions']);
         return $this->jsonResponse($roles, 'Roles retrieved successfully.');
     }
 
@@ -32,6 +33,13 @@ class RoleController extends Controller
     public function store(RoleRequest $request): JsonResponse
     {
         $role = $this->roleRepository->create($request->validated());
+
+        if ($request->has('permissions')) {
+            //permission ids are passed in the request
+
+//            $permissions = Permission::whereIn('id', $request->permissions)->get();
+            $role->permissions()->attach([]);
+        }
         return $this->jsonResponse($role, 'Role created successfully.', 201);
     }
 
@@ -54,7 +62,7 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id): JsonResponse
     {
-        $role = $this->roleRepository->update($request->validated(), $id);
+        $role = $this->roleRepository->update($id, $request->validated());
         return $this->jsonResponse($role, 'Role updated successfully.');
     }
 

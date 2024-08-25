@@ -22,7 +22,7 @@ Route::get('/', function () {
 Route::get('/translations/{lang}', function($lang) {
     App::setLocale($lang);
     return response()->json([
-        'messages' => trans('labels'),
+        'labels' => trans('labels'),
     ]);
 });
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repository\Interfaces\AccessControlRepositoryInterface;
-use Illuminate\Http\Client\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AccessControlController extends Controller
 {
@@ -29,6 +29,7 @@ class AccessControlController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $this->accessControlRepository->createOrUpdate($request->all());
         return $this->jsonResponse([], 'Access created successfully.', 201);
     }
 
@@ -39,7 +40,8 @@ class AccessControlController extends Controller
      */
     public function show($id): JsonResponse
     {
-        return $this->jsonResponse([], 'Access retrieved successfully.');
+        $access = $this->accessControlRepository->findByRole($id);
+        return $this->jsonResponse($access, 'Access retrieved successfully.');
     }
 
     /**

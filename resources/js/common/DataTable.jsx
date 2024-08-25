@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const DataTable = (props) => {
-  const { data, column, deleteUrl } = props;
+  const { data = [], column = [], deleteUrl } = props;
   const columns = useMemo(() => column, []);
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ const DataTable = (props) => {
     gotoPage,
   } = tableInstance;
 
-  const { globalFilter, pageIndex, pageSize } = state;
+    const { globalFilter, pageIndex, pageSize } = state;
 
     const handleDelete = (id) => {
         console.log(id);
@@ -78,15 +78,15 @@ const DataTable = (props) => {
     }
 
     const confirmDelete = (id) => {
-      dipatch(deleteRoute(`/${deleteUrl}/${id}`, true))
+        toast.dismiss()
+        dispatch(deleteRoute(`/${deleteUrl}/${id}`, true))
             .then(response => {
-                if (response.status === 200) {
-                toast.success('Item deleted successfully');
+            if (response.status) {
                 window.location.reload();
                 }
             })
             .catch(error => {
-                toast.error('Error deleting item');
+                console.log('Error deleting item', error.message);
             });
     }
 
@@ -134,7 +134,7 @@ const DataTable = (props) => {
                       <div className="flex items-center">
                         <span> {column.render('Header')}</span>
 
-                        <div className="ml-2 inline-flex flex-col space-y-[2px]">
+                                    <div className="ml-2 inline-flex flex-col space-y-[2px]">
                       <span className="inline-block">
                         <svg
                             className="fill-current"
@@ -147,7 +147,7 @@ const DataTable = (props) => {
                           <path d="M5 0L0 5H10L5 0Z" fill=""/>
                         </svg>
                       </span>
-                          <span className="inline-block">
+                                        <span className="inline-block">
                         <svg
                             className="fill-current"
                             width="10"
@@ -184,7 +184,7 @@ const DataTable = (props) => {
                   })}
                   <td>
                     <Link to={`edit/${row.original.id}`}>
-                      <button className="text-red-500 hover:text-red-700 ml-4">
+                      <button className=" ml-4">
                         <svg
                             className="fill-current"
                             width="16"
@@ -208,7 +208,7 @@ const DataTable = (props) => {
                       </button>
                     </Link>
 
-                    <button className="text-red-500 hover:text-red-700 ml-4" onClick={()=> handleDelete(row.original.id)}>
+                    <button className="text-danger hover:text-danger ml-4" onClick={()=> handleDelete(row.original.id)}>
                       <svg
                           className="fill-current"
                           width="16"
